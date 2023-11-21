@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">android-mix</string>
+
+    <string name="desc">for tiktok</string>
+
+    <string name="start_preview">Start Preview</string>
+
+    <string name="start_accessibility_service">Start Accessibility Service</string>
+
+    <string name="permission_not_granted_toast">Please approve all permissions</string>
+
+    <string name="turn_on_acc_service">Turn on Accessibility Service</string>
+
+    <string name="turn_on_acc_service_msg">Please Turn on Accessibility Service</string>
+
+    <string name="confirm">Confirm</string>
+
+    <string name="cancel">Cancel</string>
+
+    <string name="open_app">Open App</string>
+
+</resources>
