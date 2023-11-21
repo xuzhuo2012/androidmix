@@ -106,13 +106,8 @@ class PreviewActivity : BaseActivity() {
     }
 
     private val recordRequest: CaptureRequest by lazy {
-
-        // Capture request holds references to target surfaces
         session.device.createCaptureRequest(CameraDevice.TEMPLATE_RECORD).apply {
-            // Add the preview and recording surface targets
             addTarget(mSurfaceView.holder.surface)
-//            addTarget(encoder.getInputSurface())
-            // Sets user requested FPS for all targets
             set(CaptureRequest.CONTROL_AE_TARGET_FPS_RANGE, Range(10, 60))
 
             if (previewStabilization) {
@@ -127,7 +122,6 @@ class PreviewActivity : BaseActivity() {
     private val orientation: Int by lazy {
         characteristics.get(CameraCharacteristics.SENSOR_ORIENTATION)!!
     }
-
 
     private fun initializeCamera() = lifecycleScope.launch(Dispatchers.Main) {
 
@@ -151,10 +145,8 @@ class PreviewActivity : BaseActivity() {
         } else {
             session.setRepeatingRequest(previewRequest!!, null, cameraHandler)
         }
-
     }
 
-    /** Opens the camera and returns the opened device (as the result of the suspend coroutine) */
     @SuppressLint("MissingPermission")
     private suspend fun openCamera(
         manager: CameraManager,
@@ -186,11 +178,6 @@ class PreviewActivity : BaseActivity() {
         }, handler)
     }
 
-
-    /**
-     * Creates a [CameraCaptureSession] and returns the configured session (as the result of the
-     * suspend coroutine)
-     */
     private suspend fun createCaptureSession(
         device: CameraDevice,
         targets: List<Surface>,
@@ -205,7 +192,6 @@ class PreviewActivity : BaseActivity() {
                 cont.resumeWithException(exc)
             }
 
-            /** Called after all captures have completed - shut down the encoder */
             override fun onClosed(session: CameraCaptureSession) {
 
             }
@@ -224,17 +210,11 @@ class PreviewActivity : BaseActivity() {
             val outputConfigs = mutableListOf<OutputConfiguration>()
             for (target in targets) {
                 val outputConfig = OutputConfiguration(target)
-//                outputConfig.setDynamicRangeProfile(args.dynamicRange)
                 outputConfigs.add(outputConfig)
             }
 
             val sessionConfig = SessionConfiguration(SessionConfiguration.SESSION_REGULAR,
                 outputConfigs, HandlerExecutor(handler), stateCallback)
-//            if (android.os.Build.VERSION.SDK_INT >=
-//                android.os.Build.VERSION_CODES.UPSIDE_DOWN_CAKE
-//                && colorSpace != ColorSpaceProfiles.UNSPECIFIED) {
-//                sessionConfig.setColorSpace(ColorSpace.Named.values()[colorSpace])
-//            }
             device.createCaptureSession(sessionConfig)
             return true
         } else {
